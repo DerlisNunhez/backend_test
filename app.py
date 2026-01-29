@@ -9,7 +9,7 @@ API_URL = 'https://rickandmortyapi.com/api/character'
 @app.route("/")
 def index():
     #request que envia el usuario desde el html
-    page = request.args.get('page',2)
+    page = request.args.get('page',1)
 
     name = request.args.get('name')
 
@@ -23,4 +23,4 @@ def index():
     
     data = response.json()
     
-    return render_template('index.html',characters=data['results'])
+    return render_template('index.html',characters=data['results'], info=data['info'], page=int(page), search=False)

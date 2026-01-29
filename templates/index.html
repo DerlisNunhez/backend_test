@@ -41,5 +41,16 @@
 {% endfor %}
 </ul>
 
+{% if not search %}
+    {% if info.prev %}
+        <a href="/?page={{ page - 1 }}">Previous</a>
+    {% endif %}
+    Page {{ page }}
+    {% if info.next %}
+        <a href="/?page={{ page + 1 }}">Next</a>
+    {% endif %}
+{% endif %}
+
+
 </body>
 </html>
