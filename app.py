@@ -51,6 +51,7 @@ def index():
 
 #ruta para guardar los personajes
 @app.route('/save', methods=['POST'])
+
 def save():
     api_id = request.form['api_id']
     name = request.form['name']
@@ -58,10 +59,24 @@ def save():
     page = request.form.get('page', 1)
 
     #esto nos permite guardar en la base de datos solamente si el dato todavia no existe
-    if not Favorite.query.filter_by(api_id).first():
+    if not Favorite.query.filter_by(api_id=api_id).first():
         fav = Favorite(api_id=api_id, name=name,image=image)
 
         db.session.add(fav)
         db.session.commit()
 
     return redirect(f'/?page={page}')
+
+@app.route("/favorites")
+def favorites():
+    favorites = Favorite.query.all()
+    return render_template("favorites.html", favorites=favorites)
+
+#ruta eliminar personajes
+@app.route("/delete/<int:id>", methods=["POST"])
+def delete(id):
+    fav = Favorite.query.get(id)
+    if fav:
+        db.session.delete(fav)
+        db.session.commit()
+    return redirect("/favorites")
